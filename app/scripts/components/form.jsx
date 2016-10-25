@@ -1,6 +1,13 @@
 var _ = require('underscore');
 var React = require('react');
+var $ = require('jquery');
 
+$.fn.serializeObject = function() {
+   return this.serializeArray().reduce(function(acum, i) {
+     acum[i.name] = i.value;
+     return acum;
+   }, {});
+ };
 
 var ImageImportForm = React.createClass({
   componentWillMount: function(){
@@ -12,26 +19,34 @@ var ImageImportForm = React.createClass({
     this.showForm = !this.showForm;
     this.forceUpdate();
   },
+  formToServer: function(e){
+    e.preventDefault();
+    var input = $('#img-form').serializeObject();
+    this.props.collection.create(input);
+  return this;
+  },
   render: function(){
     var display;
     if(this.showForm){
       display =(
         <div className="container">
           <div className="row well">
+            <form id="img-form" onSubmit={this.formToServer}>
             <div className="form-group row">
               <div className="col-xs-12">
-              <input className="form-control" type="url" value="" placeholder="Image URL" id="url-input"/>
-              </div>
+               <input type="URL" name="imageUrl" className="form-control" id="URL" placeholder="Image URL"/>
+               </div>
             </div>
             <div className="form-group row">
               <div className="col-xs-12">
-              <textarea className="form-control" id="textArea" placeholder="Image Caption" rows="3"></textarea>
+              <textarea className="form-control" name="caption" id="textArea" placeholder="Image Caption" rows="3"></textarea>
               </div>
             </div>
             <div className="text-right">
-            <button className="btn">CANCEL</button>
+            <button className="btn" onClick={this.handleClick} >CANCEL</button>
              <button type="submit" className="btn btn-success">ADD IMAGE</button>
              </div>
+             </form>
           </div>
         </div>
       )
