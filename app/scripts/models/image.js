@@ -1,8 +1,11 @@
 var Backbone = require('backbone');
 
 var Photo = Backbone.Model.extend({
-  'imageUrl':'http://www.coniferousforest.com/wp-content/uploads/2016/08/American-Black-Bear-Standing.jpg',
-  'caption': 'Wait, did you hear that?'
+  defaults: {
+  'imageUrl':'',
+  'caption': ''
+},
+idAttribute: '_id'
 });
 
 var ImageCollection = Backbone.Collection.extend({

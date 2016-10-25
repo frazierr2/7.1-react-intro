@@ -4,28 +4,18 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 //Local Imports
-var models = require('./models/image');
-var form = require('./components/form.jsx').ImageImportForm;
-var listing = require('./components/listing.jsx').ImageDisplayView;
+var AppComponent = require('./components/app.jsx').AppComponent;
+
 
 var AppRouter = Backbone.Router.extend({
 routes: {
   '': 'index'
 },
-initialize: function(){
-  var photos = this.photos = new models.ImageCollection();
-  photos.fetch();
-  // console.log(this.photos);
-},
 index: function(){
 
   ReactDOM.render(
-    React.createElement(form, {collection: this.photos}),
+    React.createElement(AppComponent),
     document.getElementById('app')
-  );
-  ReactDOM.render(
-    React.createElement(listing, {collection: this.photos}),
-    document.getElementById('images')
   );
 }
 });

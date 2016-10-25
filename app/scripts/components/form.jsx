@@ -1,64 +1,47 @@
-var _ = require('underscore');
 var React = require('react');
-var $ = require('jquery');
 
-$.fn.serializeObject = function() {
-   return this.serializeArray().reduce(function(acum, i) {
-     acum[i.name] = i.value;
-     return acum;
-   }, {});
- };
 
 var ImageImportForm = React.createClass({
-  componentWillMount: function(){
-    this.showForm = false;
+  getInitialState: function(){
+    return {
+      url: this.props.model.get('imageUrl'),
+      caption: this.props.model.get('caption')
+    };
   },
-  handleClick: function(e){
+  handleUrlChange: function(e){
+    var urlInputValue = e.target.value;
+    this.setState({url: urlInputValue});
+  },
+  handleCaptionChange: function(e){
+    var captionValue = e.target.value;
+    this.setState({caption: captionValue})
+  },
+  handleSubmit: function(e){
     e.preventDefault();
+    var newImage = {imageUrl:this.state.url, caption: this.state.caption};
 
-    this.showForm = !this.showForm;
-    this.forceUpdate();
-  },
-  formToServer: function(e){
-    e.preventDefault();
-    var input = $('#img-form').serializeObject();
-    this.props.collection.create(input);
-  return this;
+    this.props.addImage(newImage);
+    this.setState({url: '', caption: ''});
   },
   render: function(){
-    var display;
-    if(this.showForm){
-      display =(
-        <div className="container">
-          <div className="row well">
-            <form id="img-form" onSubmit={this.formToServer}>
+    return(
+          <form onSubmit={this.handleSubmit} id="img-form" >
             <div className="form-group row">
               <div className="col-xs-12">
-               <input type="URL" name="imageUrl" className="form-control" id="URL" placeholder="Image URL"/>
+               <input type="URL" name="imageUrl" onChange={this.handleUrlChange} className="form-control" id="URL" value={this.state.url} placeholder="Image URL"/>
                </div>
             </div>
             <div className="form-group row">
               <div className="col-xs-12">
-              <textarea className="form-control" name="caption" id="textArea" placeholder="Image Caption" rows="3"></textarea>
+              <textarea onChange={this.handleCaptionChange} className="form-control" name="caption" id="textArea" value={this.state.caption} placeholder="Image Caption" rows="3"></textarea>
               </div>
             </div>
             <div className="text-right">
-            <button className="btn" onClick={this.handleClick} >CANCEL</button>
+             <button className="btn" >CANCEL</button>
              <button type="submit" className="btn btn-success">ADD IMAGE</button>
              </div>
-             </form>
-          </div>
-        </div>
-      )
-    }
-    return(
-      <div>
-        <div className="well banner ">
-          <i className="fa fa-plus-circle add-btn"onClick={this.handleClick} aria-hidden="true"></i>
-        </div>
-        {display}
-      </div>
-    );
+          </form>
+        );
   }
 });
 
