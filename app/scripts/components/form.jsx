@@ -2,6 +2,7 @@ var React = require('react');
 
 
 var ImageImportForm = React.createClass({
+
   getInitialState: function(){
     return {
       url:'',
@@ -38,8 +39,9 @@ var ImageImportForm = React.createClass({
     this.setState({url: '', caption: ''});
   },
   render: function(){
+    console.log(this.state);
     return(
-          <form onSubmit={this.handleSubmit} id="img-form" >
+          <form onSubmit={this.handleSubmit} id="img-form" className={this.props.showForm ? '' : 'hidden'} >
             <div className="form-group row">
               <div className="col-xs-12">
                <input type="URL" name="imageUrl" onChange={this.handleUrlChange} className="form-control" id="URL" value={this.state.url} placeholder="Image URL"/>

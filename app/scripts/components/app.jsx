@@ -56,7 +56,12 @@ var AppComponent = React.createClass({
 
         <div className="container">
           <div className="row well">
-            {this.state.showForm ? <Form model={this.state.imageToEdit} addImage={this.addImage} editImage={this.editImage}/> : null}
+            <Form
+              model={this.state.imageToEdit}
+              addImage={this.addImage}
+              editImage={this.editImage}
+              showForm={this.state.showForm}
+            />
 
             <div className="row">
               {imageList}
