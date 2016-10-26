@@ -4,9 +4,18 @@ var React = require('react');
 var ImageImportForm = React.createClass({
   getInitialState: function(){
     return {
-      url: this.props.model.get('imageUrl'),
-      caption: this.props.model.get('caption')
+      url:'',
+      caption:''
     };
+  },
+  componentWillReceiveProps: function(nextProps){
+    // console.log(nextProps.model);
+    if(nextProps.model){
+      this.setState({
+        url: nextProps.model.get('imageUrl'),
+        caption: nextProps.model.get('caption')
+      });
+    }
   },
   handleUrlChange: function(e){
     var urlInputValue = e.target.value;
@@ -20,7 +29,12 @@ var ImageImportForm = React.createClass({
     e.preventDefault();
     var newImage = {imageUrl:this.state.url, caption: this.state.caption};
 
-    this.props.addImage(newImage);
+    if(this.props.model){
+      this.props.editImage(this.props.model, newImage);
+    }else{
+      this.props.addImage(newImage);
+    }
+    // this.props.addImage(newImage);
     this.setState({url: '', caption: ''});
   },
   render: function(){
