@@ -37,8 +37,8 @@ var AppComponent = React.createClass({
 
     this.setState({imageToEdit: false, showForm: false});
   },
-  deleteImage: function(imageModel){
-    imageModel.destroy();
+  deleteImage: function(imageToRemove){
+    imageToRemove.destroy();
     this.setState({collection: this.state.collection});
   },
   render: function(){
